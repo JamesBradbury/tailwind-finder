@@ -28,7 +28,7 @@ def get_clean_segment_id(segment: Dict):
             try:
                 id_int = int(last_part_of_url)
             except ValueError:
-                raise AttributeError(f"Invalid Segment URL {id}. Must end with an integer.")
+                raise ValueError(f"Invalid Segment URL {id}. Must end with an integer.")
     return id_int
 
 
