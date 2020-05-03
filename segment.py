@@ -2,11 +2,15 @@ import local_settings
 from stravalib.client import Client
 
 strava_client = Client()
-# authorize_url = strava_client.authorization_url(client_id=local_settings.STRAVA_CLIENT_ID,
-#                                                 redirect_uri='http://localhost:8282/authorized')
-# print(authorize_url)
-
-code = "49403d5ec68a300817c72437d7c2b512baf75ce6"
+authorize_url = strava_client.authorization_url(client_id=local_settings.STRAVA_CLIENT_ID,
+                                                redirect_uri='http://localhost:8282/authorized')
+print("authorize_url:", authorize_url)
+# NOTE: Need to start by pasting this into the browser and Authorizing it.
+# Instructions here: https://developers.strava.com/docs/getting-started/#oauth
+# http://www.strava.com/oauth/authorize?client_id=[REPLACE_WITH_YOUR_CLIENT_ID]&response_type=code
+# &redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=read
+# Copy-paste code from resulting URL param "code="
+code = "b65175375ca081f48c0beae3dfe320e4283ef58e"
 
 token_response = strava_client.exchange_code_for_token(client_id=local_settings.STRAVA_CLIENT_ID,
                                                        client_secret=local_settings.STRAVA_CLIENT_SECRET,
