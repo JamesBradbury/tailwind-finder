@@ -2,9 +2,7 @@ from csv import DictReader, DictWriter
 from typing import Dict
 
 from stravalib.attributes import LatLon
-from stravalib.client import Client
 
-import local_settings
 from compassbearing import calculate_initial_compass_bearing
 from get_strava_client import get_strava_client
 
@@ -37,7 +35,7 @@ def get_clean_segment_id(segment: Dict):
 
 strava_client = get_strava_client(verbose=True)
 
-# Cheddar Gorge exmaple
+# Cheddar Gorge example
 cheddar_gorge_segment_id = 6665302
 cheddar_gorge = strava_client.get_segment(segment_id=cheddar_gorge_segment_id)
 print(dir(cheddar_gorge))
