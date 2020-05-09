@@ -1,8 +1,10 @@
 
 import http.client
 import json
+from datetime import datetime
 
 from local_settings import METOFFICE_CLIENT_ID, METOFFICE_CLIENT_SECRET
+from wind_forecasts.weather_model import WeatherForecast
 
 
 def get_weather_forecast(lat, lon):
@@ -20,14 +22,18 @@ def get_weather_forecast(lat, lon):
 
     res = conn.getresponse()
     data = res.read()
-    print("###", "2020-05-13T12:00Z" in data.decode("utf-8"))
     return json.loads(data.decode("utf-8"))
 
 
 # Wind speed is in metres per second.
 result = get_weather_forecast(lat=51.27987, lon=-2.77271)
-print(type(result))
-print(result["features"][0]["properties"]["timeSeries"])  # List of dicts
+
+forecasts_objects_list = []
+for forecast in result["features"][0]["properties"]["timeSeries"]:
+    end_datetime = datetime.strptime(forecast["time"], "%Y-%m-%dT%H:%MZ")
+    print(end_datetime.strftime("%H=%M %Y-%m-%d"))
+    # new_forecast = WeatherForecast(
+    #     start_datetime=end_datetime)
 
 # For example:
 #           {
