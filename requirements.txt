@@ -1,0 +1,2 @@
+pytest~=5.4.1
+stravalib~=0.10.2
