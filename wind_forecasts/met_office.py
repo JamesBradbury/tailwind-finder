@@ -41,20 +41,19 @@ class MetOfficeWeatherForecast(WeatherForecast):
         for forecast in json_forecast["features"][0]["properties"]["timeSeries"]:
             end_datetime = datetime.strptime(forecast["time"], "%Y-%m-%dT%H:%MZ")
             start_datetime = end_datetime - timedelta(hours=forecast_length_hrs)
-            print("###", start_datetime)
             expected_wind_speed = MetOfficeWeatherForecast.calculate_expected_wind_speed(
                 wind_speed=forecast["windSpeed10m"],
                 gust_wind_speed=forecast["windGustSpeed10m"]
             )
 
             new_forecast = MetOfficeWeatherForecast()
-            new_forecast.start_datetime = start_datetime,
-            new_forecast.end_datetime = end_datetime,
-            new_forecast.latitude = lat,
-            new_forecast.longitude = lon,
-            new_forecast.expected_wind_speed = Decimal(expected_wind_speed).quantize(Decimal("0.01")),
-            new_forecast.wind_direction_from = int(forecast["windDirectionFrom10m"]),
-            new_forecast.pressure = int(forecast["mslp"]),
+            new_forecast.start_datetime = start_datetime
+            new_forecast.end_datetime = end_datetime
+            new_forecast.latitude = lat
+            new_forecast.longitude = lon
+            new_forecast.expected_wind_speed = Decimal(expected_wind_speed).quantize(Decimal("0.01"))
+            new_forecast.wind_direction_from = int(forecast["windDirectionFrom10m"])
+            new_forecast.pressure = int(forecast["mslp"])
         
             forecasts_objects_list.append(new_forecast)
 

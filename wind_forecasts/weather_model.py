@@ -16,7 +16,8 @@ class WeatherForecast:
     pressure = None
 
     def __str__(self):
-        print("#-#", self.start_datetime)
+        if not self.start_datetime:
+            return "Forecast EMPTY"
         start_str = self.start_datetime.strftime("%H%M %Y%m%d")
         return f"Forecast at: {start_str}, Wind: {self.expected_wind_speed} from: {self.wind_direction_from}"
 
