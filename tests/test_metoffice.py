@@ -1,51 +1,37 @@
 import pytest
-from unittest.mock import patch, MagicMock
-import http.client
-# from _pytest import monkeypatch
 
 import wind_forecasts.met_office
-
-# https://docs.pytest.org/en/latest/monkeypatch.html
-# https://stackoverflow.com/questions/55888381/python-mock-exception-http-client-response
+from local_settings import METOFFICE_CLIENT_SECRET, METOFFICE_CLIENT_ID
 
 
-class MockResponse:
-    @staticmethod
-    def json():
-        return {"mock_key": "mock_response"}
+def mock_requests_get():
+    return b'{"mock_key1": "mock_response1"}'
 
 
-@pytest.fixture
-def mock_response(monkeypatch):
-    """Requests.get() mocked to return {'mock_key':'mock_response'}."""
-
-    def mock_get(*args, **kwargs):
-        return MockResponse()
-
-    monkeypatch.setattr(http.client, "get", mock_get)
-
-
-@pytest.fixture
-def mock_connection(monkeypatch):
-    """http.client HTTPSConnection mocked to return classes with some JSON"""
-    class MockClient:
-        def read(self, *args, **kwargs):
-            return b'{"mock_key": "mock_response"}'
-
-    class MockHTTPSConnection:
-        def request(self, *args, **kwargs):
-            return MockResponse
-
-        def getresponse(self, *args, **kwargs):
-            return MockClient()
-
-    def mock_conn(*args, **kwargs):
-        return MockHTTPSConnection()
-
-    monkeypatch.setattr(http.client, "HTTPSConnection", mock_conn)
-
-
-def test_get_met_office_json(mock_connection):
+def test_get_met_office_json_200(mocker):
+    """Method calls requests.get with the right lat-lon values."""
+    mocked_get = mocker.patch('wind_forecasts.met_office.requests.get')
+    mocked_get.return_value = mock_response = mocker.Mock()
+    mock_response.status_code = 200
+    mock_response.json = mock_requests_get
     mo_forecast_class = wind_forecasts.met_office.MetOfficeWeatherForecast()
-    result = mo_forecast_class.get_met_office_json(1.111, 2.222)
-    print("result:", result)
+    mo_forecast_class.get_met_office_json(1.111, 2.222)
+    mocked_get.assert_called_with(
+        url='https://api-metoffice.apiconnect.ibmcloud.com/metoffice/production/v0/forecasts/point/three-hourly',
+        headers={'x-ibm-client-id': METOFFICE_CLIENT_ID,
+                 'x-ibm-client-secret': METOFFICE_CLIENT_SECRET,
+                 'accept': 'application/json'}, params={'latitude': 1.111, 'longitude': 2.222})
+
+
+def test_get_met_office_json_404(mocker):
+    """Getting a 404 from API will raise a ConnectionError."""
+    mocked_get = mocker.patch('wind_forecasts.met_office.requests.get')
+    mocked_get.return_value = mock_response = mocker.Mock()
+    mock_response.status_code = 404
+    mock_response.json = mock_requests_get
+    mo_forecast_class = wind_forecasts.met_office.MetOfficeWeatherForecast()
+
+    with pytest.raises(ConnectionError):
+        mo_forecast_class.get_met_office_json(1.111, 2.222)
+
+
