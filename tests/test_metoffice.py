@@ -32,6 +32,6 @@ def test_get_met_office_json_404(mocker):
     mo_forecast_class = wind_forecasts.met_office.MetOfficeWeatherForecast()
 
     with pytest.raises(ConnectionError):
-        mo_forecast_class.get_met_office_json(1.111, 2.222)
+        mo_forecast_class.get_met_office_json(1.111, 2.222, url="httpx://notreal.com")
 
 
