@@ -1,5 +1,5 @@
 import pytest
-
+from pytest_mock import mocker
 import wind_forecasts.met_office
 from local_settings import METOFFICE_CLIENT_SECRET, METOFFICE_CLIENT_ID
 
