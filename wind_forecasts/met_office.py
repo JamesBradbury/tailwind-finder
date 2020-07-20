@@ -8,8 +8,9 @@ from wind_forecasts.weather_model import WeatherForecast
 
 class MetOfficeWeatherForecast(WeatherForecast):
 
-    def get_met_office_json(self, lat, lon):
-        url = "https://api-metoffice.apiconnect.ibmcloud.com/metoffice/production/v0/forecasts/point/three-hourly"
+    def get_met_office_json(self, lat, lon, url=None):
+        get_url = url or "https://api-metoffice.apiconnect.ibmcloud.com/metoffice/production/v0/forecasts/point" \
+                         "/three-hourly"
         params = dict(
             latitude=lat,
             longitude=lon
@@ -20,7 +21,7 @@ class MetOfficeWeatherForecast(WeatherForecast):
             'accept': "application/json"
         }
 
-        response = requests.get(url=url, headers=headers, params=params)
+        response = requests.get(url=get_url, headers=headers, params=params)
         if response.status_code != 200:
             raise ConnectionError(f"Unable to get data from Met Office, status: {response.status_code}")
 

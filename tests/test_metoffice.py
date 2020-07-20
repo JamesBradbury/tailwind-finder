@@ -15,9 +15,9 @@ def test_get_met_office_json_200(mocker):
     mock_response.status_code = 200
     mock_response.json = mock_requests_get
     mo_forecast_class = wind_forecasts.met_office.MetOfficeWeatherForecast()
-    mo_forecast_class.get_met_office_json(1.111, 2.222)
+    mo_forecast_class.get_met_office_json(1.111, 2.222, url="httpx://notreal.com")
     mocked_get.assert_called_with(
-        url='https://api-metoffice.apiconnect.ibmcloud.com/metoffice/production/v0/forecasts/point/three-hourly',
+        url='httpx://notreal.com',
         headers={'x-ibm-client-id': METOFFICE_CLIENT_ID,
                  'x-ibm-client-secret': METOFFICE_CLIENT_SECRET,
                  'accept': 'application/json'}, params={'latitude': 1.111, 'longitude': 2.222})
