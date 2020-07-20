@@ -1,6 +1,4 @@
-
-import http.client
-import json
+import requests
 from datetime import datetime, timedelta
 from decimal import Decimal
 
@@ -11,21 +9,22 @@ from wind_forecasts.weather_model import WeatherForecast
 class MetOfficeWeatherForecast(WeatherForecast):
 
     def get_met_office_json(self, lat, lon):
-        conn = http.client.HTTPSConnection("api-metoffice.apiconnect.ibmcloud.com")
-
+        url = "https://api-metoffice.apiconnect.ibmcloud.com/metoffice/production/v0/forecasts/point/three-hourly"
+        params = dict(
+            latitude=lat,
+            longitude=lon
+        )
         headers = {
             'x-ibm-client-id': METOFFICE_CLIENT_ID,
             'x-ibm-client-secret': METOFFICE_CLIENT_SECRET,
             'accept': "application/json"
-            }
+        }
 
-        conn.request("GET",
-                     f"/metoffice/production/v0/forecasts/point/three-hourly?latitude={lat}&longitude={lon}",
-                     headers=headers)
+        response = requests.get(url=url, headers=headers, params=params)
+        if response.status_code != 200:
+            raise ConnectionError(f"Unable to get data from Met Office, status: {response.status_code}")
 
-        res = conn.getresponse()
-        data = res.read()
-        return json.loads(data.decode("utf-8"))
+        return response.json()
 
     @staticmethod
     def calculate_expected_wind_speed(wind_speed, gust_wind_speed):
