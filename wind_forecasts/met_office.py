@@ -60,12 +60,6 @@ class MetOfficeWeatherForecast(WeatherForecast):
         return forecasts_objects_list
 
 
-met_office_forecast = MetOfficeWeatherForecast()
-result = met_office_forecast.get_weather_forecast(lat=51.27987, lon=-2.77271)
-print([str(f) for f in result])
-print(len(result))
-
-
 # For example:
 #           {
 #             "time": "2020-05-09T09:00Z",
