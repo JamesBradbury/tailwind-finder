@@ -53,5 +53,5 @@ class TestGetRelativeHeading:
                 wind_direction=10
             )
         assert str(exc_info.value) == \
-               "Headings and wind directions must be in the range 0-360. segment_heading: -20, " \
-               "wind_direction: 10"
+            "Headings and wind directions must be in the range 0-360. " \
+            "segment_heading: -20, wind_direction: 10"
