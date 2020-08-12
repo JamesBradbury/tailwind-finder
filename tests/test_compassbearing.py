@@ -47,4 +47,3 @@ def test_directly_north_east_with_pos_lon_neg_lat():
         point_a=start_latlong,
         point_b=end_latlong
     ) == pytest.approx(45.0, 1)
-
