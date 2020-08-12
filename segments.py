@@ -1,8 +1,6 @@
-from csv import DictReader, DictWriter
 from typing import Dict
 
 from stravalib import Client
-
 from compassbearing import calculate_initial_compass_bearing
 
 
