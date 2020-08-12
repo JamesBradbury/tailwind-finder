@@ -4,7 +4,7 @@ from stravalib import Client
 from compassbearing import calculate_initial_compass_bearing
 
 
-def get_bearing_for_segment(strava_client: Client, segment_id: int):
+def get_bearing_for_segment(strava_client: Client, segment_id: int) -> float:
     segment_object = strava_client.get_segment(segment_id=segment_id)
     return calculate_initial_compass_bearing(
         point_a=tuple(segment_object.start_latlng),
@@ -12,7 +12,7 @@ def get_bearing_for_segment(strava_client: Client, segment_id: int):
     )
 
 
-def get_clean_segment_id(segment: Dict):
+def get_clean_segment_id(segment: Dict) -> int:
     """Returns segment ID as an int. Can handle ID as numeric string or as a segment URL string."""
     id = segment.get("ID")
     id_int = None

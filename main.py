@@ -29,9 +29,9 @@ with open("local_segments.csv", mode="r") as local_csv:
     for segment in csv_reader:
         updated_segment = segment.copy()
         segment_id = get_clean_segment_id(segment=segment)
-        updated_segment["Bearing"] = get_bearing_for_segment(strava_client=strava_client, segment_id=segment_id)
+        updated_segment["bearing"] = get_bearing_for_segment(strava_client=strava_client, segment_id=segment_id)
         segments_with_headings.append(updated_segment)
 
 for seg in segments_with_headings:
-    print(seg["Name"], seg["ID"], seg["Bearing"])
+    print(seg["Name"], seg["ID"], seg["bearing"])
 

@@ -6,7 +6,7 @@ LICENSE: public domain
 import math
 
 
-def calculate_initial_compass_bearing(point_a, point_b):
+def calculate_initial_compass_bearing(point_a: tuple, point_b: tuple) -> float:
     """
     Calculates the bearing between two points.
 
