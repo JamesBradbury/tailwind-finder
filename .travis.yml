@@ -8,6 +8,7 @@ before_script:
  - echo STRAVA_CLIENT_ID=\"1234\" >> local_settings.py
  - echo STRAVA_CLIENT_SECRET=\"abcd\" >> local_settings.py
  - echo TOKEN_RESPONSE=\"abcd\" >> local_settings.py
+ - echo DEFAULT_MINIMUM_SCORE=0 >> local_settings.py
 install:
  - pip install -r requirements.txt
 script:
