@@ -33,6 +33,8 @@ def get_wind_angle_effect(relative_heading):
     :param relative_heading: Angle in degrees of wind from front of bike (0=headwind, 180=tailwind)
     :return: Wind effect factor.
     """
+    if relative_heading > 180 or relative_heading < 0:
+        raise ValueError(f"relative_heading must be in the range 0-180 degrees, but was {relative_heading}")
     return (
             (
                 sin((relative_heading * 0.0434 - 176)

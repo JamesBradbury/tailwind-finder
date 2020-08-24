@@ -109,8 +109,17 @@ class TestScoreSegmentFromForecast:
 
 
 class TestGetWindAngleEffect:
-    def test_various(self):
-        for a in range(0, 180, 10):
-            print(a, get_wind_angle_effect(a))
+    def test_110_is_negative(self):
+        assert get_wind_angle_effect(relative_heading=110) < 0
 
-        pass
+    def test_115_is_positive(self):
+        assert get_wind_angle_effect(relative_heading=115) > 0
+
+    def test_190_raises_value_error(self):
+        with pytest.raises(ValueError) as e:
+            get_wind_angle_effect(relative_heading=190)
+
+        assert str(e.value) == "relative_heading must be in the range 0-180 degrees, " \
+                               "but was 190"
+
+
