@@ -12,7 +12,7 @@ class WeatherForecast:
     latitude = None
     longitude = None
     expected_wind_speed = None
-    wind_direction_from = None
+    wind_direction_from = None  # in degrees
     pressure = None
 
     def __str__(self):
