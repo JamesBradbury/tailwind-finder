@@ -70,7 +70,6 @@ class TestScoreSegmentFromForecast:
     date_example = datetime.strptime("2020-01-01T10:00Z", "%Y-%m-%dT%H:%MZ")
 
     def test_no_wind_returns_zero(self):
-        segment = dict(bearing=100.0)
         forecast = WeatherForecast()
         forecast.start_datetime = self.date_example
         forecast.wind_direction_from = 10.0
@@ -84,7 +83,6 @@ class TestScoreSegmentFromForecast:
         forecast.expected_wind_speed = 10.0
         assert score_segment_from_forecast(segment=dict(bearing=100.0), forecast=forecast) < 0
 
-    @pytest.mark.xfail
     def test_exact_tailwind_gives_higher_score_than_almost_tailwind(self):
         forecast = WeatherForecast()
         forecast.start_datetime = self.date_example
@@ -94,26 +92,20 @@ class TestScoreSegmentFromForecast:
         near_tailwind_score = score_segment_from_forecast(segment=dict(bearing=11), forecast=forecast)
         assert exact_tailwind_score > near_tailwind_score
 
+    def test_exact_headwind_gives_lower_score_than_almost_headwind(self):
+        forecast = WeatherForecast()
+        forecast.start_datetime = self.date_example
+        forecast.wind_direction_from = 50.0
+        forecast.expected_wind_speed = 15.0
+        exact_headwind_score = score_segment_from_forecast(segment=dict(bearing=50), forecast=forecast)
+        near_headwind_score = score_segment_from_forecast(segment=dict(bearing=49), forecast=forecast)
+        assert exact_headwind_score < near_headwind_score
+
     def test_other_scores(self):
         forecast = WeatherForecast()
         forecast.start_datetime = self.date_example
         forecast.wind_direction_from = 0.0
         forecast.expected_wind_speed = 10.0
-
-        print("### SCORE tailwind:",
-              score_segment_from_forecast(segment=dict(bearing=179.0), forecast=forecast))
-
-        forecast.expected_wind_speed = 15
-        print("### SCORE bigger tailwind:",
-              score_segment_from_forecast(segment=dict(bearing=179.0), forecast=forecast))
-
-        forecast.expected_wind_speed = 10
-        print("### SCORE headwind:",
-              score_segment_from_forecast(segment=dict(bearing=1.0), forecast=forecast))
-
-        forecast.expected_wind_speed = 15
-        print("### SCORE bigger headwind:",
-              score_segment_from_forecast(segment=dict(bearing=1.0), forecast=forecast))
 
 
 class TestGetWindAngleEffect:
