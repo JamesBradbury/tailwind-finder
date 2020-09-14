@@ -95,14 +95,14 @@ class SegmentsArchive:
 
 
 # Exploratory code to write segment data locally (less spamming Strava client)
-new_strava_client = get_strava_client(verbose=True)
-new_segments_archive = SegmentsArchive(new_strava_client)
-starred_segs = new_strava_client.get_starred_segments()
-seg_ids = {seg.id for seg in starred_segs}  # if seg.activity_type == "Ride"}
-
-new_segments_archive.read_segments(segments_ids=seg_ids)
-
-athlete_segments = [(s.strava_id, s.name_str) for s in new_segments_archive.segments_list]
-for sid, name_str in athlete_segments:
-    print(f"Segment: {sid} {name_str}")
-new_segments_archive.write_segments_to_csv()
+# new_strava_client = get_strava_client(verbose=True)
+# new_segments_archive = SegmentsArchive(new_strava_client)
+# starred_segs = new_strava_client.get_starred_segments()
+# seg_ids = {seg.id for seg in starred_segs}  # if seg.activity_type == "Ride"}
+# 
+# new_segments_archive.read_segments(segments_ids=seg_ids)
+# 
+# athlete_segments = [(s.strava_id, s.name_str) for s in new_segments_archive.segments_list]
+# for sid, name_str in athlete_segments:
+#     print(f"Segment: {sid} {name_str}")
+# new_segments_archive.write_segments_to_csv()
