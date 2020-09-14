@@ -39,4 +39,7 @@ def get_strava_client(verbose=False):
         athlete = strava_client.get_athlete()
         print("For {id}, I now have an access token {token}".format(id=athlete.id, token=access_token))
 
+    # Use refresh tokens here:
+    # https://developers.strava.com/docs/authentication/#refreshingexpiredaccesstokens
+
     return strava_client
