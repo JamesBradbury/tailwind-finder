@@ -35,14 +35,6 @@ class UserSegment:
         )
         return cls(new_segment)
 
-    def header_for_csv(self):
-        return "strava_id,name,start_latlng,end_latlng,threshold_score_to_report"
-
-    def row_for_csv(self):
-        return ",".join([
-
-        ])
-
     @staticmethod
     def get_clean_segment_id(segment: Dict) -> int:
         """Returns segment ID as an int. Can handle ID as numeric string or as a segment URL string."""
